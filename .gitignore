@@ -16,3 +16,4 @@ application.properties
 application-local.properties
 .env
 NOTAS.md
+/.nb-gradle/

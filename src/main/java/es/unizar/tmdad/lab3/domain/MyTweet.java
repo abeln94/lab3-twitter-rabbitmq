@@ -9,199 +9,199 @@ import java.util.Map;
 
 public class MyTweet {
 
-	private Tweet tweet;
-	
-	private String text;
+    private Tweet tweet;
 
-	public MyTweet(Tweet tweet) {
-		this.tweet = tweet;
-	}
-	
-	public Map<String, Object> getExtraData() {
-		return tweet.getExtraData();
-	}
+    private String text;
 
-	public String getText() {
-		return tweet.getText();
-	}
-	
-	public void setUnmodifiedText(String text) {
-		this.text = text;
-	}
+    public MyTweet(Tweet tweet) {
+        this.tweet = tweet;
+    }
 
-	public String getUnmodifiedText() {
-		return text!=null? text: tweet.getUnmodifiedText();
-	}
+    public Map<String, Object> getExtraData() {
+        return tweet.getExtraData();
+    }
 
-	public Date getCreatedAt() {
-		return tweet.getCreatedAt();
-	}
+    public String getText() {
+        return tweet.getText();
+    }
 
-	public String getFromUser() {
-		return tweet.getFromUser();
-	}
+    public void setUnmodifiedText(String text) {
+        this.text = text;
+    }
 
-	public void setFromUser(String fromUser) {
-		tweet.setFromUser(fromUser);
-	}
+    public String getUnmodifiedText() {
+        return text != null ? text : tweet.getUnmodifiedText();
+    }
 
-	public long getId() {
-		return tweet.getId();
-	}
+    public Date getCreatedAt() {
+        return tweet.getCreatedAt();
+    }
 
-	public String getProfileImageUrl() {
-		return tweet.getProfileImageUrl();
-	}
+    public String getFromUser() {
+        return tweet.getFromUser();
+    }
 
-	public void setProfileImageUrl(String profileImageUrl) {
-		tweet.setProfileImageUrl(profileImageUrl);
-	}
+    public void setFromUser(String fromUser) {
+        tweet.setFromUser(fromUser);
+    }
 
-	public Long getToUserId() {
-		return tweet.getToUserId();
-	}
+    public long getId() {
+        return tweet.getId();
+    }
 
-	public void setToUserId(Long toUserId) {
-		tweet.setToUserId(toUserId);
-	}
+    public String getProfileImageUrl() {
+        return tweet.getProfileImageUrl();
+    }
 
-	public long getFromUserId() {
-		return tweet.getFromUserId();
-	}
+    public void setProfileImageUrl(String profileImageUrl) {
+        tweet.setProfileImageUrl(profileImageUrl);
+    }
 
-	public void setInReplyToStatusId(Long inReplyToStatusId) {
-		tweet.setInReplyToStatusId(inReplyToStatusId);
-	}
+    public Long getToUserId() {
+        return tweet.getToUserId();
+    }
 
-	public Long getInReplyToStatusId() {
-		return tweet.getInReplyToStatusId();
-	}
+    public void setToUserId(Long toUserId) {
+        tweet.setToUserId(toUserId);
+    }
 
-	public void setFromUserId(long fromUserId) {
-		tweet.setFromUserId(fromUserId);
-	}
+    public long getFromUserId() {
+        return tweet.getFromUserId();
+    }
 
-	public String getLanguageCode() {
-		return tweet.getLanguageCode();
-	}
+    public void setInReplyToStatusId(Long inReplyToStatusId) {
+        tweet.setInReplyToStatusId(inReplyToStatusId);
+    }
 
-	public void setLanguageCode(String languageCode) {
-		tweet.setLanguageCode(languageCode);
-	}
+    public Long getInReplyToStatusId() {
+        return tweet.getInReplyToStatusId();
+    }
 
-	public String getSource() {
-		return tweet.getSource();
-	}
+    public void setFromUserId(long fromUserId) {
+        tweet.setFromUserId(fromUserId);
+    }
 
-	public void setSource(String source) {
-		tweet.setSource(source);
-	}
+    public String getLanguageCode() {
+        return tweet.getLanguageCode();
+    }
 
-	public void setRetweetCount(Integer retweetCount) {
-		tweet.setRetweetCount(retweetCount);
-	}
+    public void setLanguageCode(String languageCode) {
+        tweet.setLanguageCode(languageCode);
+    }
 
-	public Integer getRetweetCount() {
-		return tweet.getRetweetCount();
-	}
+    public String getSource() {
+        return tweet.getSource();
+    }
 
-	public void setRetweeted(boolean retweeted) {
-		tweet.setRetweeted(retweeted);
-	}
+    public void setSource(String source) {
+        tweet.setSource(source);
+    }
 
-	public boolean isRetweeted() {
-		return tweet.isRetweeted();
-	}
+    public void setRetweetCount(Integer retweetCount) {
+        tweet.setRetweetCount(retweetCount);
+    }
 
-	public Tweet getRetweetedStatus() {
-		return tweet.getRetweetedStatus();
-	}
+    public Integer getRetweetCount() {
+        return tweet.getRetweetCount();
+    }
 
-	public void setRetweetedStatus(Tweet tweet) {
-		tweet.setRetweetedStatus(tweet);
-	}
+    public void setRetweeted(boolean retweeted) {
+        tweet.setRetweeted(retweeted);
+    }
 
-	public boolean isRetweet() {
-		return tweet.isRetweet();
-	}
+    public boolean isRetweeted() {
+        return tweet.isRetweeted();
+    }
 
-	public void setFavorited(boolean favorited) {
-		tweet.setFavorited(favorited);
-	}
+    public Tweet getRetweetedStatus() {
+        return tweet.getRetweetedStatus();
+    }
 
-	public boolean isFavorited() {
-		return tweet.isFavorited();
-	}
+    public void setRetweetedStatus(Tweet tweet) {
+        tweet.setRetweetedStatus(tweet);
+    }
 
-	public void setFavoriteCount(Integer favoriteCount) {
-		tweet.setFavoriteCount(favoriteCount);
-	}
+    public boolean isRetweet() {
+        return tweet.isRetweet();
+    }
 
-	public Integer getFavoriteCount() {
-		return tweet.getFavoriteCount();
-	}
+    public void setFavorited(boolean favorited) {
+        tweet.setFavorited(favorited);
+    }
 
-	public Entities getEntities() {
-		return tweet.getEntities();
-	}
+    public boolean isFavorited() {
+        return tweet.isFavorited();
+    }
 
-	public void setEntities(Entities ent) {
-		tweet.setEntities(ent);
-	}
+    public void setFavoriteCount(Integer favoriteCount) {
+        tweet.setFavoriteCount(favoriteCount);
+    }
 
-	public boolean hasMentions() {
-		return tweet.hasMentions();
-	}
+    public Integer getFavoriteCount() {
+        return tweet.getFavoriteCount();
+    }
 
-	public boolean hasMedia() {
-		return tweet.hasMedia();
-	}
+    public Entities getEntities() {
+        return tweet.getEntities();
+    }
 
-	public boolean hasUrls() {
-		return tweet.hasUrls();
-	}
+    public void setEntities(Entities ent) {
+        tweet.setEntities(ent);
+    }
 
-	public boolean hasTags() {
-		return tweet.hasTags();
-	}
+    public boolean hasMentions() {
+        return tweet.hasMentions();
+    }
 
-	public TwitterProfile getUser() {
-		return tweet.getUser();
-	}
+    public boolean hasMedia() {
+        return tweet.hasMedia();
+    }
 
-	public void setUser(TwitterProfile prof) {
-		tweet.setUser(prof);
-	}
+    public boolean hasUrls() {
+        return tweet.hasUrls();
+    }
 
-	public Long getInReplyToUserId() {
-		return tweet.getInReplyToUserId();
-	}
+    public boolean hasTags() {
+        return tweet.hasTags();
+    }
 
-	public void setInReplyToUserId(Long inReplyToUserId) {
-		tweet.setInReplyToUserId(inReplyToUserId);
-	}
+    public TwitterProfile getUser() {
+        return tweet.getUser();
+    }
 
-	public String getInReplyToScreenName() {
-		return tweet.getInReplyToScreenName();
-	}
+    public void setUser(TwitterProfile prof) {
+        tweet.setUser(prof);
+    }
 
-	public void setInReplyToScreenName(String inReplyToScreenName) {
-		tweet.setInReplyToScreenName(inReplyToScreenName);
-	}
+    public Long getInReplyToUserId() {
+        return tweet.getInReplyToUserId();
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		return tweet.equals(o);
-	}
+    public void setInReplyToUserId(Long inReplyToUserId) {
+        tweet.setInReplyToUserId(inReplyToUserId);
+    }
 
-	@Override
-	public int hashCode() {
-		return tweet.hashCode();
-	}
+    public String getInReplyToScreenName() {
+        return tweet.getInReplyToScreenName();
+    }
 
-	@Override
-	public String toString() {
-		return tweet.toString();
-	}
-	
+    public void setInReplyToScreenName(String inReplyToScreenName) {
+        tweet.setInReplyToScreenName(inReplyToScreenName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return tweet.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return tweet.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return tweet.toString();
+    }
+
 }

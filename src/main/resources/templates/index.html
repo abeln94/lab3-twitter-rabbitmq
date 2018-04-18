@@ -1,73 +1,73 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org"
- xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Cliente Streaming Twitter</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta
-     content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no"
-     id="Viewport" name="viewport" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css}"/>
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Cliente Streaming Twitter</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta
+            content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=no"
+            id="Viewport" name="viewport" />
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet"
+              href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.min.css}"/>
 
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script id="template" type="x-tmpl-mustache">
-        <div class="card p-3">
+        <!-- Latest compiled and minified JavaScript -->
+        <script id="template" type="x-tmpl-mustache">
+            <div class="card p-3">
             <div class="card-body">
-                <h5 class="card-title">
-                    <a href="https://twitter.com/{{fromUser}}"
-                       target="_blank"><span class="fas fa-user"></span> {{fromUser}}</a>
-                    dice en
-                    <a href="https://twitter.com/{{fromUser}}/status/{{idStr}}"
-                       target="_blank"><span class="fab fa-twitter-square"></span> {{idStr}}</a>
-                </h5>
-                <p class="card-text">{{{unmodifiedText}}}</p>
+            <h5 class="card-title">
+            <a href="https://twitter.com/{{fromUser}}"
+            target="_blank"><span class="fas fa-user"></span> {{fromUser}}</a>
+            dice en
+            <a href="https://twitter.com/{{fromUser}}/status/{{idStr}}"
+            target="_blank"><span class="fab fa-twitter-square"></span> {{idStr}}</a>
+            </h5>
+            <p class="card-text">{{{unmodifiedText}}}</p>
             </div>
+            </div>
+        </script>
+
+
+
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-sm sticky-top">
+            <a class="navbar-brand" href="#">Cliente Streaming Twitter</a>
+            <form class="mx-2 my-auto d-inline w-100" id="search" action="search" method="get">
+                <div class="input-group">
+                    <input class="form-control" type="text" id="q" name="q" placeholder="Escribe algo que quieras buscar"/>
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">Buscar</button>
+                    </span>
+                </div>
+            </form>
+        </nav>
+        <div class="container-fluid">
+            <div class="card-columns mt-3" id="resultsBlock"></div>
         </div>
-    </script>
+        <script src="http://code.jquery.com/jquery-3.0.0.min.js"
+        th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/mustache@2.3.0/mustache.min.js"
+        th:src="@{/webjars/mustache/2.3.0/mustache.min.js}"></script>
 
 
+        <script defer="" src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"
+        th:src="@{/webjars/font-awesome/5.0.6/svg-with-js/js/fontawesome-all.js}"></script>
 
-</head>
-<body>
-    <nav class="navbar navbar-dark bg-dark navbar-expand-sm sticky-top">
-        <a class="navbar-brand" href="#">Cliente Streaming Twitter</a>
-        <form class="mx-2 my-auto d-inline w-100" id="search" action="search" method="get">
-            <div class="input-group">
-                <input class="form-control" type="text" id="q" name="q" placeholder="Escribe algo que quieras buscar"/>
-                <span class="input-group-append">
-                    <button class="btn btn-secondary" type="submit">Buscar</button>
-                </span>
-            </div>
-        </form>
-    </nav>
-    <div class="container-fluid">
-        <div class="card-columns mt-3" id="resultsBlock"></div>
-    </div>
-    <script src="http://code.jquery.com/jquery-3.0.0.min.js"
-             th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
-     <script
-             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-             th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.min.js}"></script>
-
-     <script
-             src="https://cdn.jsdelivr.net/npm/mustache@2.3.0/mustache.min.js"
-             th:src="@{/webjars/mustache/2.3.0/mustache.min.js}"></script>
-
-
-     <script defer="" src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"
-             th:src="@{/webjars/font-awesome/5.0.6/svg-with-js/js/fontawesome-all.js}"></script>
-
-     <script
-             src="http://cdn.jsdelivr.net/webjars/sockjs-client/0.3.4-1/sockjs.js"
-             th:src="@{/webjars/sockjs-client/0.3.4-1/sockjs.js}"></script>
-     <script
-             src="http://cdn.jsdelivr.net/webjars/stomp-websocket/2.3.1-1/stomp.js"
-             th:src="@{/webjars/stomp-websocket/2.3.1-1/stomp.js}"></script>
-     <script th:src="@{/functions.js}"
-             src="../static/functions.js"></script>
-</body>
+        <script
+            src="http://cdn.jsdelivr.net/webjars/sockjs-client/0.3.4-1/sockjs.js"
+        th:src="@{/webjars/sockjs-client/0.3.4-1/sockjs.js}"></script>
+        <script
+            src="http://cdn.jsdelivr.net/webjars/stomp-websocket/2.3.1-1/stomp.js"
+        th:src="@{/webjars/stomp-websocket/2.3.1-1/stomp.js}"></script>
+        <script th:src="@{/functions.js}"
+        src="../static/functions.js"></script>
+    </body>
 </html>

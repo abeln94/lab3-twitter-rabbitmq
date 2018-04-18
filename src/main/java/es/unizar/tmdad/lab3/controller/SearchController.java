@@ -17,9 +17,9 @@ public class SearchController {
     public String greeting() {
         return "index";
     }
-    
+
     @MessageMapping("/search")
-	public void search(String query) {
-		twitter.search(query);
-	}
+    public void search(String query) {
+        twitter.search(query);
+    }
 }

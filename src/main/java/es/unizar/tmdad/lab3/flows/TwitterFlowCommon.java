@@ -16,42 +16,42 @@ import java.util.stream.Collectors;
 
 abstract public class TwitterFlowCommon {
 
-	@Autowired
-	private TwitterLookupService tls;
+    @Autowired
+    private TwitterLookupService tls;
 
-	@Bean
-	public IntegrationFlow sendTweet() {
-		return IntegrationFlows
-				.from(requestChannelRabbitMQ())
-				.filter("payload instanceof T(org.springframework.social.twitter.api.Tweet)")
-				.transform(identifyTopics())
-				.split(TargetedTweet.class, duplicateByTopic())
-				.transform(highlight())
-				.handle("streamSendingService", "sendTweet").get();
-	}
+    @Bean
+    public IntegrationFlow sendTweet() {
+        return IntegrationFlows
+                .from(requestChannelRabbitMQ())
+                .filter("payload instanceof T(org.springframework.social.twitter.api.Tweet)")
+                .transform(identifyTopics())
+                .split(TargetedTweet.class, duplicateByTopic())
+                .transform(highlight())
+                .handle("streamSendingService", "sendTweet").get();
+    }
 
-	abstract protected AbstractMessageChannel requestChannelRabbitMQ();
+    abstract protected AbstractMessageChannel requestChannelRabbitMQ();
 
-	private GenericTransformer<TargetedTweet, TargetedTweet> highlight() {
-		return t -> {
-			String tag = t.getFirstTarget();
-			String text = t.getTweet().getUnmodifiedText();
-			t.getTweet().setUnmodifiedText(
-					text.replaceAll(tag, "<span class=\"badge badge-pill badge-danger\">" + tag + "</span>"));
-			return t;
-		};
-	}
+    private GenericTransformer<TargetedTweet, TargetedTweet> highlight() {
+        return t -> {
+            String tag = t.getFirstTarget();
+            String text = t.getTweet().getUnmodifiedText();
+            t.getTweet().setUnmodifiedText(
+                    text.replaceAll(tag, "<span class=\"badge badge-pill badge-danger\">" + tag + "</span>"));
+            return t;
+        };
+    }
 
-	private Function<TargetedTweet, ?> duplicateByTopic() {
-		return t -> t.getTargets().stream()
-				.map(x -> new TargetedTweet(t.getTweet(), x))
-				.collect(Collectors.toList());
-	}
+    private Function<TargetedTweet, ?> duplicateByTopic() {
+        return t -> t.getTargets().stream()
+                .map(x -> new TargetedTweet(t.getTweet(), x))
+                .collect(Collectors.toList());
+    }
 
-	private GenericTransformer<Tweet, TargetedTweet> identifyTopics() {
-		return t -> new TargetedTweet(new MyTweet(t), tls.getQueries().stream()
-				.filter(x -> t.getText().contains(x))
-				.collect(Collectors.toList()));
-	}
+    private GenericTransformer<Tweet, TargetedTweet> identifyTopics() {
+        return t -> new TargetedTweet(new MyTweet(t), tls.getQueries().stream()
+                .filter(x -> t.getText().contains(x))
+                .collect(Collectors.toList()));
+    }
 
 }

@@ -20,40 +20,40 @@ import java.util.Map;
 @Service
 public class StreamSendingService {
 
-	@Autowired
-	private StreamListener integrationStreamListener;
+    @Autowired
+    private StreamListener integrationStreamListener;
 
-	@Autowired
-	private SimpMessageSendingOperations ops;
+    @Autowired
+    private SimpMessageSendingOperations ops;
 
-	@Autowired
-	private TwitterTemplate twitterTemplate;
+    @Autowired
+    private TwitterTemplate twitterTemplate;
 
-	private Stream stream;
+    private Stream stream;
 
-	@PostConstruct
-	public void initialize() {
-		FilterStreamParameters fsp = new FilterStreamParameters();
-		fsp.addLocation(-180, -90, 180, 90);
-		stream = twitterTemplate.streamingOperations().filter(fsp,
-				Arrays.asList(integrationStreamListener));
-	}
+    @PostConstruct
+    public void initialize() {
+        FilterStreamParameters fsp = new FilterStreamParameters();
+        fsp.addLocation(-180, -90, 180, 90);
+        stream = twitterTemplate.streamingOperations().filter(fsp,
+                Arrays.asList(integrationStreamListener));
+    }
 
-	public Stream getStream() {
-		return stream;
-	}
+    public Stream getStream() {
+        return stream;
+    }
 
-	public void sendTweet(TargetedTweet targeted) {
-		Map<String, Object> map = new HashMap<>();
-		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
-		ops.convertAndSend("/queue/search/" + targeted.getFirstTarget(),
-				targeted.getTweet(), map);
-	}
+    public void sendTweet(TargetedTweet targeted) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
+        ops.convertAndSend("/queue/search/" + targeted.getFirstTarget(),
+                targeted.getTweet(), map);
+    }
 
-	public void sendTrends(List<Map.Entry<String, Integer>> targeted) {
-		Map<String, Object> map = new HashMap<>();
-		map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
-		ops.convertAndSend("/queue/trends",
-				targeted, map);
-	}
+    public void sendTrends(List<Map.Entry<String, Integer>> targeted) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
+        ops.convertAndSend("/queue/trends",
+                targeted, map);
+    }
 }
