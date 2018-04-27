@@ -3,6 +3,7 @@ package es.unizar.tmdad.lab3.flows;
 import es.unizar.tmdad.lab3.domain.MyTweet;
 import es.unizar.tmdad.lab3.domain.TargetedTweet;
 import es.unizar.tmdad.lab3.service.TwitterLookupService;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.channel.AbstractMessageChannel;
@@ -11,8 +12,6 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.support.Function;
 import org.springframework.integration.transformer.GenericTransformer;
 import org.springframework.social.twitter.api.Tweet;
-
-import java.util.stream.Collectors;
 
 abstract public class TwitterFlowCommon {
 

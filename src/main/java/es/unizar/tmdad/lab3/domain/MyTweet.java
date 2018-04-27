@@ -1,11 +1,10 @@
 package es.unizar.tmdad.lab3.domain;
 
+import java.util.Date;
+import java.util.Map;
 import org.springframework.social.twitter.api.Entities;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.TwitterProfile;
-
-import java.util.Date;
-import java.util.Map;
 
 public class MyTweet {
 

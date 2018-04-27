@@ -1,6 +1,11 @@
 package es.unizar.tmdad.lab3.service;
 
 import es.unizar.tmdad.lab3.domain.TargetedTweet;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -10,12 +15,6 @@ import org.springframework.social.twitter.api.StreamListener;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
-
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class StreamSendingService {
@@ -44,6 +43,7 @@ public class StreamSendingService {
     }
 
     public void sendTweet(TargetedTweet targeted) {
+        System.out.println("Sending tweet");
         Map<String, Object> map = new HashMap<>();
         map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
         ops.convertAndSend("/queue/search/" + targeted.getFirstTarget(),
@@ -51,6 +51,7 @@ public class StreamSendingService {
     }
 
     public void sendTrends(List<Map.Entry<String, Integer>> targeted) {
+        System.out.println("Sending trends");
         Map<String, Object> map = new HashMap<>();
         map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON);
         ops.convertAndSend("/queue/trends",

@@ -1,10 +1,9 @@
 package es.unizar.tmdad.lab3.service;
 
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
-import org.springframework.stereotype.Service;
-
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TwitterLookupService {

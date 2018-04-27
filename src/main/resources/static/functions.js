@@ -1,4 +1,5 @@
-var subscription = null;
+var subscriptionTweets = null;
+var subscriptionTopics = null;
 var newQuery = 0;
 
 function registerTemplate() {
@@ -21,13 +22,16 @@ function registerSendQueryAndConnect() {
     $("#search").submit(
             function (event) {
                 event.preventDefault();
-                if (subscription) {
-                    subscription.unsubscribe();
+                if (subscriptionTweets) {
+                    subscriptionTweets.unsubscribe();
+                }
+                if (subscriptionTopics) {
+                    subscriptionTopics.unsubscribe();
                 }
                 var query = $("#q").val();
                 stompClient.send("/app/search", {}, query);
                 newQuery = 1;
-                subscription = stompClient.subscribe("/queue/search/" + query, function (data) {
+                subscriptionTweets = stompClient.subscribe("/queue/search/" + query, function (data) {
                     var resultsBlock = $("#resultsBlock");
                     if (newQuery) {
                         resultsBlock.empty();
@@ -35,6 +39,9 @@ function registerSendQueryAndConnect() {
                     }
                     var tweet = JSON.parse(data.body);
                     resultsBlock.prepend(Mustache.render(template, tweet));
+                });
+                subscriptionTopics = stompClient.subscribe("/queue/trends", function (data){
+                    console.log(data);
                 });
             });
 }
