@@ -1,4 +1,4 @@
-package es.unizar.tmdad.lab3.flows;
+package es.unizar.tmdad.lab3.solution;
 
 import es.unizar.tmdad.lab3.domain.TargetedTweet;
 import java.util.ArrayList;
@@ -36,13 +36,16 @@ import org.springframework.social.twitter.api.Tweet;
 @Configuration
 public class TwitterFlowAggregator {
 
-    @Autowired
-    TwitterFlowCommon flowFanout;
+    //magic channel
+    @Bean
+    public DirectChannel requestChannelTwitter() {
+        return MessageChannels.direct().get();
+    }
 
     @Bean
     public IntegrationFlow sendtrendingTopics() {
         return IntegrationFlows
-                .from(flowFanout.requestChannelRabbitMQ())
+                .from(requestChannelTwitter())
                 .filter("payload instanceof T(org.springframework.social.twitter.api.Tweet)")
                 .aggregate(aggregationSpec())
                 .transform(getTrendingTopics())
@@ -51,7 +54,7 @@ public class TwitterFlowAggregator {
 
     private Consumer<AggregatorSpec> aggregationSpec() {
         return a -> a.correlationStrategy(m -> 1)
-                .releaseStrategy(g -> {System.out.println(g.size()); return g.size() == 1000; }  )
+                .releaseStrategy(g -> g.size() == 1000 )
                 .expireGroupsUponCompletion(true);
     }
 
@@ -62,8 +65,8 @@ public class TwitterFlowAggregator {
                     .collect(Collectors.groupingBy(HashTagEntity::getText, Collectors.reducing(0, s -> 1, Integer::sum)));
 
             List<Entry<String, Integer>> list = new ArrayList<>(hashCodes.entrySet());
-            list.sort(Entry.comparingByValue());
-
+            list.sort(Collections.reverseOrder(Entry.comparingByValue()));
+            
             return list.subList(0, 10);
         };
     }

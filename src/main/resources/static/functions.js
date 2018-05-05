@@ -5,6 +5,9 @@ var newQuery = 0;
 function registerTemplate() {
     template = $("#template").html();
     Mustache.parse(template);
+
+    templateTopics = $("#templateTopics").html();
+    Mustache.parse(templateTopics);
 }
 
 function setConnected(connected) {
@@ -18,6 +21,22 @@ function registerSendQueryAndConnect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
+
+        subscriptionTopics = stompClient.subscribe("/queue/trends", function (data) {
+
+            var resultsBlock = $("#resultsTopics");
+            var topics = JSON.parse(data.body);
+
+            console.log(topics);
+
+            resultsBlock.empty();
+            for (var i in topics) {
+                for (var topic in topics[i]) {
+                    resultsBlock.append("<li class=\"list-group-item\">"+topic+"("+topics[i][topic]+")</li>");
+                }
+            }
+        });
+
     });
     $("#search").submit(
             function (event) {
@@ -39,9 +58,6 @@ function registerSendQueryAndConnect() {
                     }
                     var tweet = JSON.parse(data.body);
                     resultsBlock.prepend(Mustache.render(template, tweet));
-                });
-                subscriptionTopics = stompClient.subscribe("/queue/trends", function (data){
-                    console.log(data);
                 });
             });
 }

@@ -29,7 +29,13 @@
             </div>
         </script>
 
-
+        <script id="templateTopics" type="x-tmpl-mustache">
+            {{#.}}
+                {{#.}}
+                    <p>{{key}} ({{value}})</p>
+                {{/.}}
+            {{/.}}
+        </script>
 
     </head>
     <body>
@@ -44,6 +50,12 @@
                 </div>
             </form>
         </nav>
+        <div>
+            <p>Trending-topics:</p>
+            <div>
+                <ul class="list-group" id="resultsTopics"></ul>
+            </div>
+        </div>
         <div class="container-fluid">
             <div class="card-columns mt-3" id="resultsBlock"></div>
         </div>
