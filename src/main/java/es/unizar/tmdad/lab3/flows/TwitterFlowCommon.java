@@ -22,6 +22,7 @@ abstract public class TwitterFlowCommon {
     public IntegrationFlow sendTweet() {
         return IntegrationFlows
                 .from(requestChannelRabbitMQ())
+                .log("common")
                 .filter("payload instanceof T(org.springframework.social.twitter.api.Tweet)")
                 .transform(identifyTopics())
                 .split(TargetedTweet.class, duplicateByTopic())

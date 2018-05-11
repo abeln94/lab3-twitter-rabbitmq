@@ -1,10 +1,7 @@
 package es.unizar.tmdad.lab3.solution;
 
-import es.unizar.tmdad.lab3.domain.TargetedTweet;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,10 +15,7 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.integration.aggregator.CorrelationStrategy;
 import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter;
-import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.AggregatorSpec;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -36,16 +30,52 @@ import org.springframework.social.twitter.api.Tweet;
 @Configuration
 public class TwitterFlowAggregator {
 
-    //magic channel
+    final static String AGGREGATOR_FANOUT_EXCHANGE = "twitter_fanout";
+    final static String AGGREGATOR_FANOUT_A_QUEUE_NAME = "aggregator_fanout_queue";
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
+    // Configuración RabbitMQ
     @Bean
-    public DirectChannel requestChannelTwitter() {
+    Queue aggregatorFanoutQueue() {
+        return new Queue(AGGREGATOR_FANOUT_A_QUEUE_NAME, false);
+    }
+
+    @Bean
+    FanoutExchange aggregatorFanoutExchange() {
+        return new FanoutExchange(AGGREGATOR_FANOUT_EXCHANGE);
+    }
+
+    @Bean
+    Binding aggregatorFanoutBinding() {
+        return BindingBuilder.bind(aggregatorFanoutQueue()).to(aggregatorFanoutExchange());
+    }
+
+    // Flujo #3
+    //
+    // MessageEndpoint RabbitMQ -(requestChannelRabbitMQ)-> tareas ...
+    //
+    @Bean
+    public DirectChannel requestChannelAggregator() {
         return MessageChannels.direct().get();
     }
 
     @Bean
+    public AmqpInboundChannelAdapter aggregatorAmqpInbound() {
+        SimpleMessageListenerContainer smlc = new SimpleMessageListenerContainer(
+                rabbitTemplate.getConnectionFactory());
+        smlc.setQueues(aggregatorFanoutQueue());
+        return Amqp.inboundAdapter(smlc)
+                .outputChannel(requestChannelAggregator()).get();
+    }
+
+    // -- //
+    @Bean
     public IntegrationFlow sendtrendingTopics() {
         return IntegrationFlows
-                .from(requestChannelTwitter())
+                .from(requestChannelAggregator())
+                .log("aggregator")
                 .filter("payload instanceof T(org.springframework.social.twitter.api.Tweet)")
                 .aggregate(aggregationSpec())
                 .transform(getTrendingTopics())
@@ -54,7 +84,7 @@ public class TwitterFlowAggregator {
 
     private Consumer<AggregatorSpec> aggregationSpec() {
         return a -> a.correlationStrategy(m -> 1)
-                .releaseStrategy(g -> g.size() == 1000 )
+                .releaseStrategy(g -> g.size() == 1000)
                 .expireGroupsUponCompletion(true);
     }
 
@@ -66,7 +96,7 @@ public class TwitterFlowAggregator {
 
             List<Entry<String, Integer>> list = new ArrayList<>(hashCodes.entrySet());
             list.sort(Collections.reverseOrder(Entry.comparingByValue()));
-            
+
             return list.subList(0, 10);
         };
     }
